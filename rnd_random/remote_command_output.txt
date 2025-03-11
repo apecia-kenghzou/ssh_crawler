@@ -1,0 +1,19 @@
+Command executed at 2025-03-10 19:20:58.001103
+==================================================
+ 
+
+Welcome, your activity will be logged and monitor by ISOC
+Info: Current mode: Standard (working independently).
+Warning: The intelligent upgrade function is disabled. Log in to the web platform and enable this function.
+Warning: A weak-encryption-algorithm plug-in is loaded on the device, which may bring security risks.
+  -----------------------------------------------------------------------------     
+  User last login information:     
+  -----------------------------------------------------------------------------
+  Access Type: SSH      
+  IP-Address : 10.244.26.254     
+  Time       : 2025-03-10 19:22:48+08:00     
+  -----------------------------------------------------------------------------
+Warning: 3267480760
+<SFB_WiFi_Controller1>
+==================================================
+End of output

@@ -1,0 +1,27 @@
+Command executed at 2025-03-10 19:25:51.411986
+==================================================
+ 
+
+Welcome, your activity will be logged and monitor by ISOC
+Info: Current mode: Standard (working independently).
+Warning: The intelligent upgrade function is disabled. Log in to the web platform and enable this function.
+Warning: A weak-encryption-algorithm plug-in is loaded on the device, which may bring security risks.
+  -----------------------------------------------------------------------------     
+  User last login information:     
+  -----------------------------------------------------------------------------
+  Access Type: SSH      
+  IP-Address : 10.244.26.254     
+  Time       : 2025-03-10 19:25:14+08:00     
+  -----------------------------------------------------------------------------
+Warning: 3267483640
+<SFB_WiFi_Controller1>display station all |  include PHNIX|SFBF4_WAR|AP13_KLIA_SFB_GNDPABX|AP22_KLIA_SFB_F4|SFBF4_EAST
+Rf/WLAN: Radio ID/WLAN ID                                                     
+Rx/Tx: link receive rate/link transmit rate(Mbps)                             
+----------------------------------------------------------------------------------------------------------------------------
+STA MAC          AP ID Ap name                   Rf/WLAN  Band  Type  Rx/Tx      RSSI  VLAN  IP address       SSID              
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+Total: 360 2.4G: 47 5G: 313 6G: 0
+<SFB_WiFi_Controller1>
+==================================================
+End of output
