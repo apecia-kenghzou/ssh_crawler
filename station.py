@@ -7,7 +7,7 @@ from datetime import datetime
 import requests
 def upload_data(data):
     # Define the URL for the POST request.
-    url = "https://192.168.2.45:1880/api/foresight/ups/upload"
+    url = "https://192.168.2.45:1880/api/foresight/ap/user/upload"
 
     # Example payload data. Adjust this dictionary as needed.
     payload = data
@@ -43,13 +43,14 @@ def clean_output(output, command):
     
     # Fallback: return original output if command not found
     return output.strip()
+  
 def get_json(data):
     lines = data.splitlines()
 
     # Find the header line that contains the desired table columns.
     header_index = None
     for i, line in enumerate(lines):
-        if all(keyword in line for keyword in ["ID", "MAC", "Name", "Group", "IP", "Type", "State"]):
+        if all(keyword in line for keyword in ['STA MAC', 'AP ID', 'Ap name', "Rf/WLAN", "Band","Type","Rx/Tx", "RSSI", "VLAN","IP address","SSID"]):
             header_index = i
             break
 
@@ -76,9 +77,47 @@ def get_json(data):
         table_data.append(row_dict)
 
     # Output the extracted table data as JSON.
-    #upload_data(json.dumps(table_data, indent=2))
-    upload_data(table_data)
-    
+    print(json.dumps(table_data, indent=2))
+   # upload_data(table_data)
+def parse_station_data(input):
+    lines = input.splitlines()
+    entries = []
+    capture = False
+    data_section = False
+
+    for line in lines:
+        stripped = line.strip()
+        
+        if stripped.startswith("STA MAC"):
+            data_section = True
+            continue
+            
+        if data_section:
+            if stripped.startswith("----"):
+                capture = True
+                continue
+                
+            if capture:
+                if stripped.startswith(("====", "End of output")):
+                    break
+                    
+                parts = line.strip().split()
+                if len(parts) >= 11:
+                    entry = {
+                        "STA MAC": parts[0],
+                        "AP ID": parts[1],
+                        "Ap name": parts[2],
+                        "Rf/WLAN": parts[3],
+                        "Band": parts[4],
+                        "Type": parts[5],
+                        "Rx/Tx": parts[6],
+                        "RSSI": parts[7],
+                        "VLAN": parts[8],
+                        "IP address": parts[9],
+                        "SSID": ' '.join(parts[10:])
+                    }
+                    entries.append(entry)
+    upload_data(entries)
 def main():
 
 
@@ -88,7 +127,7 @@ def main():
     username = "x" # Replace with ur username
     password = "x" # Replace with ur password
     remote_command = "screen-length 0 temporary"  # Verify this command works on the target 
-    remote_command_2 = "display ap all"
+    remote_command_2 = "display station all"
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     clean_ip = host.replace('.', '_')  # Replace dots with underscores
     output_file = f"ssh_result_{timestamp}_{clean_ip}.log"
@@ -124,7 +163,7 @@ def main():
         #time.sleep(10)  # Ping with 2s deadline + buffer
         
         # Capture output
-        child.expect(wexpect.EOF, timeout=10)  # Wait for command completion
+        child.expect(wexpect.EOF, timeout=20)  # Wait for command completion
         print(child.before)
         child.sendline("")
         output = child.before
@@ -138,7 +177,7 @@ def main():
     except wexpect.TIMEOUT:
         print("Operation timed out.")
         print("Last output:", child.before)
-        get_json(child.before)
+        parse_station_data(child.before)
         with open(output_file, 'w') as f:
             f.write(f"Command executed at {datetime.now()}\n")
             f.write("="*50 + "\n")
